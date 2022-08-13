@@ -26,6 +26,7 @@ struct GalleryView: View {
     //  DYNAMIC GRID LAYOUT
     @State private var gridLayout : [GridItem] = [GridItem (.flexible())]
     @State private var gridColumn:   Double = 3.0
+    @State private var value1: Double = 0
     
     func gridSwitch(){
         gridLayout = Array(repeating: .init(.flexible()), count: Int(gridColumn))
@@ -44,6 +45,7 @@ struct GalleryView: View {
                 Slider(value: $gridColumn, in: 2...4, step: 1)
                     .padding(.horizontal)
                     .onChange(of: gridColumn) { value in
+                        value1 = value
                         gridSwitch()
                     }
                 
@@ -61,12 +63,15 @@ struct GalleryView: View {
                     }
                 } // LAZY GRID
             } // GRID
+            .animation(Animation.easeIn(duration: 0.5),value: value1)
             .onAppear {
                 gridSwitch()
             }
+            .padding(.top, 50)
         } // SCROLL
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(MotionAnimationView())
+        .ignoresSafeArea()
     }
 }
 
